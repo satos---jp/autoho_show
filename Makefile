@@ -1,7 +1,10 @@
 CXX = g++
 CXXFLAGS = -O2 -g -MMD -MP
 
-SRC = dlltest.cpp ai_tes.cpp rensya_window.cpp debug_window.cpp reversing/reverser.cpp
+SRC = dlltest.cpp ai_tes.cpp rensya_window.cpp debug_window.cpp reversing/reverser.cpp \
+	reversing/boss/boss_reverse.cpp reversing/player/player_reverse.cpp \
+	reversing/bullet/bullet_reverse.cpp reversing/laser/laser_reverse.cpp \
+	reversing/rev_utils.cpp reversing/draw_utils.cpp
 
 OBJDIR = build
 DLL_OBJS = $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
