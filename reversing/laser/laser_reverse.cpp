@@ -57,7 +57,6 @@ vector<laser> enulaser(int necx){
 	return res;
 }
 
-
 void laser::draw(HDC &hdc){
 	//ods("%f %f : %f %f : %f %f",p.y,p.x,sp.y,sp.x,col.y,col.x);
 	ods("%f %f : %f %f %f",p.y,p.x,xt,yt,tt);

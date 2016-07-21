@@ -9,11 +9,10 @@ using namespace std;
 
 struct bullet{
 	fpos p,sp,col;
+	void step();
 	void draw(HDC& hdc);
 };
 
 vector<bullet> enubal(int necx);
-
-
 
 #endif

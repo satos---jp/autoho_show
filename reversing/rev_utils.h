@@ -2,6 +2,7 @@
 #define REV_UTILS_H
 
 #include "../defines.h"
+#include<cmath>
 
 struct fpos{
 	float y,x;
@@ -24,7 +25,12 @@ struct fpos{
 		if(y!=a.y)return (y<a.y);
 		return (x<a.x);
 	}
-	double dist(fpos p);
+	double dist(fpos p){
+		return sqrt((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y));
+	}
+	double norm(){
+		return sqrt(x*x+y*y);
+	}
 };
 
 fpos getfpos(int b);

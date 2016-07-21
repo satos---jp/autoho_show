@@ -8,8 +8,6 @@ using namespace std;
 
 #define rep(i,n) for(int i=0;i<((int)(n));i++)
 
-
-
 void getcorn(){ //0x430450のecxの. あたり判定につかわれてる謎のやつ。
 	int b = 0x4c4e70;
 	b = *(int*)(b);
@@ -26,7 +24,9 @@ void getcorn(){ //0x430450のecxの. あたり判定につかわれてる謎のやつ。
 	}
 	//x y x y. 微妙にずれか？ (+16とか, 128 + 192 とかいりそう。)
 }
+//使ってないっぽい、かな...
 
+//revdataをまとめる。
 void getrevdata(revdata& r){
 	
 	r.my = getmydata();
@@ -38,12 +38,10 @@ void getrevdata(revdata& r){
 	r.lasers = enulaser(lap);
 	
 	//ods("myp: %f %f",r.myp.x,r.myp.y);
-	//getcorn();
-	//getspped();
 }
 
+
 void revdata::draw(HDC &hdc){
-	
 	
 	HBRUSH blackbrush = CreateSolidBrush(RGB(0,0,0)); //3
 	/*
@@ -82,17 +80,14 @@ void revdata::draw(HDC &hdc){
 	*/
 }
 
-
+//盤面を1フレーム分進める。
 void revdata::step(){
-	if(bos.sp.dist(fpos())<=1000.0){
-		bos.p = bos.p + bos.sp;
-	}
-	rep(i,buls.size()){
-		bullet& b = buls[i];
-		b.p = b.p + b.sp;
-	}
+	bos.step();
+	rep(i,buls.size())buls[i].step();
 }
 
+//自機から距離d以内の弾のみ考慮することにより
+//計算速度を上げる。
 void revdata::select(double d){
 	vector<bullet> tb;
 	rep(i,buls.size()){
@@ -102,12 +97,16 @@ void revdata::select(double d){
 	swap(buls,tb);
 }
 
+//「中心pa,あたりca」の四角形と「中心pb,あたりcb」の四角形が
+//当たっているかを調べる。
+//すぐ下のrevdata::isdie()で使われる。
 bool iscol(fpos pa,fpos ca,fpos pb,fpos cb){
 	if(abs(pa.y-pb.y) - 0.3 > ca.y + cb.y)return false; //1でよいかな？
 	if(abs(pa.x-pb.x) - 0.3 > ca.x + cb.x)return false;
 	return true;
 }
 
+//死んでしまってるかを調べる。
 bool revdata::isdie(){
 	if(iscol(my.p,my.col,bos.p,bos.col))return true;
 	rep(i,buls.size()){
@@ -115,10 +114,6 @@ bool revdata::isdie(){
 		if(iscol(my.p,my.col, b.p,b.col))return true;
 	}
 	return false;
-}
-
-double fpos::dist(fpos p){
-	return sqrt((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y));
 }
 
 

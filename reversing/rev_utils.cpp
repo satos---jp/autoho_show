@@ -1,19 +1,23 @@
 #include "rev_utils.h"
 
-fpos getfposconv(int b){ //位置補正をかけたやつ
+//位置補正をかけたfposを得る。
+fpos getfposconv(int b){ 
 	if(b==0)return fpos();
 	fpos p = getfpos(b);
 	p.x += 128 + 192; p.y += 16;
 	return p;
 }
 
-
+//intポイントにポインタのあるfposを得る
 fpos getfpos(int b){
 	if(b==0)return fpos();
 	float x = *(float*)(b);
 	float y = *(float*)(b+0x4);
 	return fpos(y,x);
 }
+
+//baseから連続していくシーンシステムについて、
+//functionのポインタがtofpである物を探す
 
 int getenumecx(int base,int tofp){
 	for(;;){

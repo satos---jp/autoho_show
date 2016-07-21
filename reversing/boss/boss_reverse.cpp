@@ -39,5 +39,10 @@ void boschara::draw(HDC &hdc){
 }
 
 
+void boschara::step(){
+	if(sp.norm()<=1000.0){
+		p = p + sp;
+	}
+}
 
 

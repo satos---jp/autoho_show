@@ -7,6 +7,7 @@
 struct boschara{
 	fpos p,col,sp;
 	void draw(HDC& hdc);
+	void step();
 };
 
 boschara getbosdata();

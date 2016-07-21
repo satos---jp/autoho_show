@@ -39,3 +39,8 @@ void bullet::draw(HDC &hdc){
 	MoveToEx(hdc , p.x, p.y  , NULL);
 	LineTo(hdc , p.x + sp.x*10 , p.y + sp.y*10);
 }
+
+
+void bullet::step(){
+	p = p + sp;
+}

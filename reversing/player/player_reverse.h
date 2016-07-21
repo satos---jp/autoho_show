@@ -13,7 +13,6 @@ struct mychara{
 	void normalize();
 };
 
-void getspped();
 mychara getmydata();
 
 #endif

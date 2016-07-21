@@ -3,38 +3,18 @@
 
 #define rep(i,n) for(int i=0;i<((int)(n));i++)
 
-
-void getspped(){ //自機の移動速度
-	
-	int nec = getenumecx(0x4be3c8,0x430180);
-	if(nec!=0){
-		int b = *(int*)(nec+0x410);
-		if(b!=0){
-			ods("sppedp %x",b);
-			int d[4] = {0x18,0x20,0x14,0x1c};
-			rep(i,4){
-				float p = *(float*)(b+d[i]);
-				ods("speed %d : %f",i,p);
-			}
-			
-			float p = *(float*)(nec+0x2a18);
-			ods("slower : %f",p); 
-			// 2.3, 2.3/sqrt(2), 5, 5/sqrt(2)
-			return;
-		}
-	}
-	
-	ods("speednull");
-}
-
 mychara getmydata(){
 	int necx;
 	mychara res;
+	
+	//位置と当たりを得る
 	necx = getenumecx(0x4be3c8 + 0x20,0x430210);
 	if(necx!=0){
 		res.p = getfposconv(necx + 0x1e30);
 		res.col = getfpos(necx + 0x3d8);
 	}
+	
+	//速度を得る
 	necx = getenumecx(0x4be3c8,0x430180);
 	if(necx!=0){
 		int b = *(int*)(necx+0x410);
