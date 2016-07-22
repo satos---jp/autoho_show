@@ -48,6 +48,8 @@ bool isokinit(replstate re){
 
 
 vector<pair<mp,fpos> > enummypos(revdata d,fpos nmp){
+	//次状態としてありうる自機位置を列挙する。
+	//mpにはレバー入れ方が入る。
 	typedef pair<mp,fpos> mfp;
 	vector<mfp> res;
 	reg(dx,-1,1){
@@ -68,17 +70,23 @@ vector<pair<mp,fpos> > enummypos(revdata d,fpos nmp){
 void getd(revdata d,int& ry,int& rx,int& button){
 	ry=rx=button=0;
 	//return;
-	if(d.my.fil>=1.0){
-		if(abs(d.my.p.dist(d.bos.p)) < 120.0){
-			//撮れるので打つ
-			button |= 1;
-			//return;
+	d.select(50.0);
+	//ods("tbulletsize %d",d.buls.size());
+	d.step();
+	
+	if(!d.isdie()){
+		//死ぬ場合は間に合わないっぽい。
+		//5-7で確認可能。
+		if(d.my.fil>=1.0){
+			if(abs(d.my.p.dist(d.bos.p)) < 120.0){
+				//撮れるので打つ
+				button |= 1;
+				//return;
+			}
 		}
 	}
 	
-	d.select(50.0);
-	ods("tbulletsize %d",d.buls.size());
-	d.step();
+	
 	
 	typedef pair<mp,fpos> mfp;
 	vector<mfp> vs;
@@ -86,7 +94,11 @@ void getd(revdata d,int& ry,int& rx,int& button){
 	
 	fpos mmyp = d.my.p;
 	
-	rep(i,15){ //深さ10で。多けりゃやめる。
+	/*
+	beam search みたいな感じで、
+	死なないパターンを列挙していく。
+	*/
+	rep(i,20){ //深さ15で。多けりゃやめる。
 		//ods("depth %d vssize %d",i,vs.size()); 
 		vector<mfp> tv;
 		
@@ -107,7 +119,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 		}
 		
 		swap(tv,vs);
-		if(vs.size()>=100)break;
+		if(vs.size()>=500)break;
 		d.step();
 	}
 	
@@ -128,13 +140,28 @@ void getd(revdata d,int& ry,int& rx,int& button){
 		rep(i,9){
 			int dy = i/3-1 , dx = i%3-1;
 			//ods("dy,dx %d %d -> %d pat",dy,dx,pan[i]);
-			if(pan[i]>5){ //とりま、5パターンくらいあればいいよね。
+			if(pan[i]>25){ //とりま、25パターンくらいあればいいよね。
+				/*
+				9方位のうち、ある程度いけそう && ボスに近い、なものを選んでいる。
+				壁から遠ざかる方を優先しませう。
+				*/
 				rep(j,env.size()){
 					if(env[j].fir!=mp(dy,dx))continue;
 					d.my.p = env[j].sec;
 					d.my.normalize();
-					double tbd = abs(d.my.p.dist(d.bos.p)-100);
-					//ods("dy,dx %d %d -> %d pat %f dist",dy,dx,pan[i],tbd);
+					double tbd = d.my.p.dist(d.bos.p);
+					
+					
+					if(tbd<100.0){
+						//近すぎるのも考え物だよなあ...
+						tbd = (100.0-tbd) * 10.0;
+					}
+					
+					double wd = d.my.distfromwall();
+					if(wd<50.0){
+						tbd += (50.0-wd) * 1000.0;
+					}
+					ods("dy,dx %d %d -> %d pat %f dist",dy,dx,pan[i],tbd);
 					han.push_back(dmp( tbd , mp(dy,dx)));
 					break;
 				}
@@ -146,7 +173,8 @@ void getd(revdata d,int& ry,int& rx,int& button){
 		sort(han.begin(),han.end());
 		ods("candsize %d ",han.size());
 		if(han.size()>0){
-			ods("ress %f , %d %d",han[0].fir,han[0].sec.fir,han[0].sec.sec);
+			//ボスに一番近いやつを選ぶ。
+			//ods("ress %f , %d %d",han[0].fir,han[0].sec.fir,han[0].sec.sec);
 			mp pa = han[0].sec;
 			ry = pa.fir * 300.0;
 			rx = pa.sec * 300.0;
@@ -156,11 +184,11 @@ void getd(revdata d,int& ry,int& rx,int& button){
 
 
 void ai_conduction(replstate* re,joydata* jo,revdata& rd){
-	ods("conduct %d",nstate);
+	//ods("conduct %d",nstate);
 	jo->x=jo->y=500;
 	jo->b=0;
 	
-	ods("myp .. y: %f x: %f\n",rd.my.p.y,rd.my.p.x);
+	//ods("myp .. y: %f x: %f\n",rd.my.p.y,rd.my.p.x);
 	
 	if(nstate==-1){
 		if(false && !isokinit(*re)){ //とりま、外しとく。
@@ -244,9 +272,9 @@ void ai_conduction(replstate* re,joydata* jo,revdata& rd){
 		ods("invalid nstate");
 	}	
 	
-	ods("nstate .. %d fix .. %s",nstate,fixed?"true":"false");
-	ods("ndir x .. %d y .. %d bs .. %d",jo->x,jo->y,jo->b);
-	re->out();
+	//ods("nstate .. %d fix .. %s",nstate,fixed?"true":"false");
+	//ods("ndir x .. %d y .. %d bs .. %d",jo->x,jo->y,jo->b);
+	//re->out();
 	mms=re->ms;
 	
 	/*

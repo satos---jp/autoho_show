@@ -101,8 +101,8 @@ void revdata::select(double d){
 //当たっているかを調べる。
 //すぐ下のrevdata::isdie()で使われる。
 bool iscol(fpos pa,fpos ca,fpos pb,fpos cb){
-	if(abs(pa.y-pb.y) - 0.3 > ca.y + cb.y)return false; //1でよいかな？
-	if(abs(pa.x-pb.x) - 0.3 > ca.x + cb.x)return false;
+	if(abs(pa.y-pb.y) - 0.1 > ca.y + cb.y)return false; //1でよいかな？ 0.3かな？
+	if(abs(pa.x-pb.x) - 0.1 > ca.x + cb.x)return false;
 	return true;
 }
 

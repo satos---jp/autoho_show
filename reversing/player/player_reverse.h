@@ -11,6 +11,7 @@ struct mychara{
 	float fil; //ƒJƒƒ‰‚Ì[“U—¦
 	void draw(HDC& hdc);
 	void normalize();
+	double distfromwall();
 };
 
 mychara getmydata();

@@ -24,11 +24,11 @@ mychara getmydata(){
 			// 2.3, 2.3/sqrt(2), 5, 5/sqrt(2)
 			rep(i,4){
 				res.sp[i] = *(float*)(b+d[i]);
-				ods("speed %d : %f",i,res.sp[i]);
+				//ods("speed %d : %f",i,res.sp[i]);
 			}
 			
 			res.slor = *(float*)(necx+0x2a18);
-			ods("slower : %f",res.slor); 
+			//ods("slower : %f",res.slor); 
 		}
 		
 		res.fil = *(float*)(necx + 0xb80 + 0x1e3c);
@@ -44,9 +44,19 @@ void mychara::normalize(){
 	p.x = max(136.0,min(504.0,(double)p.x));
 }
 
+//ï«Ç©ÇÁÇÃÉLÉáÉäÇ™ãﬂÇ∑Ç¨ÇÈÇÃÇÕÇ‚ÇŒÇ¢ÅB
+double mychara::distfromwall(){
+	//y .. 48.0 to 452.0
+	//x .. 136.0 to 504.0
+	double res = 1000;
+	res = min(res,min(abs(p.y-48.0),abs(452.0-p.y)));
+	res = min(res,min(abs(p.x-136.0),abs(504.0-p.x)));
+	return res;
+}
+
 void mychara::draw(HDC &hdc){
 	//ods("%f %f : %f %f : %f %f",p.y,p.x,sp.y,sp.x,col.y,col.x);
-	ods("mychara %f %f : %f %f : %f",p.y,p.x,col.y,col.x,fil);
+	//ods("mychara %f %f : %f %f : %f",p.y,p.x,col.y,col.x,fil);
 	drawbox(hdc,p.y-col.y/2,  p.y+col.y/2,  p.x-col.x/2,  p.x+col.x/2);
 }
 

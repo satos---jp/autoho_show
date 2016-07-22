@@ -43,7 +43,7 @@ laser getlasp(int r){
 }
 
 vector<laser> enulaser(int necx){
-	ods("laserecxs %x ",necx);
+	//ods("laserecxs %x ",necx);
 	vector<laser> res;
 	if(necx==0)return res;
 	necx = *(int*)(necx+0x8);
@@ -59,7 +59,7 @@ vector<laser> enulaser(int necx){
 
 void laser::draw(HDC &hdc){
 	//ods("%f %f : %f %f : %f %f",p.y,p.x,sp.y,sp.x,col.y,col.x);
-	ods("%f %f : %f %f %f",p.y,p.x,xt,yt,tt);
+	//ods("%f %f : %f %f %f",p.y,p.x,xt,yt,tt);
 	
 	vector<fpos> ps;
 	ps.push_back(fpos(xt,8.0));

@@ -52,7 +52,7 @@ void getrepst(replstate* st){
 	//詳細はreversing/forida/anal を見よ
 	
 	//ptは死んだときに得られるそうな。
-	st->out();
+	//st->out();
 }
 
 
@@ -220,8 +220,8 @@ void WINAPI detach_joygetposex(){
 	//ODS(ods);
 	SendMessage(debhwnd,WM_CLOSE,0,0); //きかない。
 	
-	Sleep(1000);
-	//なんか、1秒程度待つと落ちない。
+	Sleep(5000);
+	//なんか、5秒程度待つと落ちない。
 	//謎、まったくもって謎！
 	VirtualProtect(gotpos, sizeof(gotpos), PAGE_EXECUTE_READ, &dummy);
 	//もっぺんはめる。

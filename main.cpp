@@ -38,7 +38,8 @@ int main(){
 	BOOL procuc = Process32First(hSnap, &pe);
 	do{
 		//printf("id .. %d name .. %s\n",pe.th32ProcessID,pe.szExeFile);
-		if(!strcmp("th095.exe", pe.szExeFile)){
+		//if(!strcmp("th095.exe", pe.szExeFile)){
+		if(!strcmp("x.exe", pe.szExeFile)){
 			pid = pe.th32ProcessID;
 			break;
 		}
