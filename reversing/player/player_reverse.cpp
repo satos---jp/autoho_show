@@ -3,15 +3,14 @@
 
 #define rep(i,n) for(int i=0;i<((int)(n));i++)
 
-mychara getmydata(){
+void mychara::get(){
 	int necx;
-	mychara res;
 	
 	//ˆÊ’u‚Æ“–‚½‚è‚ğ“¾‚é
 	necx = getenumecx(0x4be3c8 + 0x20,0x430210);
 	if(necx!=0){
-		res.p = getfposconv(necx + 0x1e30);
-		res.col = getfpos(necx + 0x3d8);
+		p = getfposconv(necx + 0x1e30);
+		col = getfpos(necx + 0x3d8);
 	}
 	
 	//‘¬“x‚ğ“¾‚é
@@ -23,17 +22,16 @@ mychara getmydata(){
 			int d[4] = {0x18,0x20,0x14,0x1c};
 			// 2.3, 2.3/sqrt(2), 5, 5/sqrt(2)
 			rep(i,4){
-				res.sp[i] = *(float*)(b+d[i]);
+				sp[i] = *(float*)(b+d[i]);
 				//ods("speed %d : %f",i,res.sp[i]);
 			}
 			
-			res.slor = *(float*)(necx+0x2a18);
+			slor = *(float*)(necx+0x2a18);
 			//ods("slower : %f",res.slor); 
 		}
 		
-		res.fil = *(float*)(necx + 0xb80 + 0x1e3c);
+		fil = *(float*)(necx + 0xb80 + 0x1e3c);
 	}
-	return res;
 }
 
 void mychara::normalize(){

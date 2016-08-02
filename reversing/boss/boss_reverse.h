@@ -6,11 +6,9 @@
 
 struct boschara{
 	fpos p,col,sp;
+	void get();
 	void draw(HDC& hdc);
 	void step();
 };
-
-boschara getbosdata();
-fpos getbosxy(int necx);
 
 #endif

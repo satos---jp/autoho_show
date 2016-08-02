@@ -16,13 +16,12 @@ struct revdata{
 	std::vector<bullet> buls;
 	std::vector<laser> lasers;
 	
+	void get();
 	void draw(HDC& hdc);
 	
 	void step();
 	void select(double d);
 	bool isdie();
 };
-
-void getrevdata(revdata& r);
 
 #endif

@@ -27,15 +27,15 @@ void getcorn(){ //0x430450のecxの. あたり判定につかわれてる謎のやつ。
 //使ってないっぽい、かな...
 
 //revdataをまとめる。
-void getrevdata(revdata& r){
+void revdata::get(){
 	
-	r.my = getmydata();
-	r.bos = getbosdata();
+	my.get();
+	bos.get();
 	int bup = getenumecx(0x4be3c8 + 0x20,0x405a00);
-	r.buls = enubal(bup);
+	buls = enubal(bup);
 	
 	int lap = getenumecx(0x4be3c8,0x41db00);
-	r.lasers = enulaser(lap);
+	lasers = enulaser(lap);
 	
 	//ods("myp: %f %f",r.myp.x,r.myp.y);
 }

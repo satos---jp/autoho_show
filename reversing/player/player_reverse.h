@@ -9,11 +9,10 @@ struct mychara{
 	float sp[4];
 	float slor; //“Å–¶‚Æ‚©‚Å’x‚­‚È‚é‚â‚Â
 	float fil; //ƒJƒƒ‰‚Ì[“U—¦
+	void get();
 	void draw(HDC& hdc);
 	void normalize();
 	double distfromwall();
 };
-
-mychara getmydata();
 
 #endif

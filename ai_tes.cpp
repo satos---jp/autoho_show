@@ -183,7 +183,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 }
 
 
-void ai_conduction(replstate* re,joydata* jo,revdata& rd){
+void ai_conduction(joydata* jo,replstate& re,revdata& rd){
 	//ods("conduct %d",nstate);
 	jo->x=jo->y=500;
 	jo->b=0;
@@ -191,27 +191,27 @@ void ai_conduction(replstate* re,joydata* jo,revdata& rd){
 	//ods("myp .. y: %f x: %f\n",rd.my.p.y,rd.my.p.x);
 	
 	if(nstate==-1){
-		if(false && !isokinit(*re)){ //とりま、外しとく。
+		if(false && !isokinit(re)){ //とりま、外しとく。
 			ods("cantstart");
 			return;
 		}
 		else{
 			jo->b = 1;
 			//初期動
-			if(re->ms<0){
+			if(re.ms<0){
 				nstate = -1;
 				//まだまだ
 			}
 			else{
 				nstate = 0;
-				mms = re->ms;
+				mms = re.ms;
 			}
 		}
 	}
 	else{
 		jo->b = 0;
 		if(nstate<-1)return;
-		if(re->ms<0){ //なんらかのエラーが発生している。
+		if(re.ms<0){ //なんらかのエラーが発生している。
 			ods("errorocced");
 			nstate = -2;
 			return;
@@ -233,13 +233,13 @@ void ai_conduction(replstate* re,joydata* jo,revdata& rd){
 		break;
 	case 2:
 		//起動するまで待つ
-		if(re->ms>=100){
+		if(re.ms>=100){
 			nstate = 3;
 			//起動した。
 		}
 		break;
 	case 3:
-		if(re->ms!=mms){
+		if(re.ms!=mms){
 			//無事に動いている
 			//とりま、向きのみで。
 
@@ -275,7 +275,7 @@ void ai_conduction(replstate* re,joydata* jo,revdata& rd){
 	//ods("nstate .. %d fix .. %s",nstate,fixed?"true":"false");
 	//ods("ndir x .. %d y .. %d bs .. %d",jo->x,jo->y,jo->b);
 	//re->out();
-	mms=re->ms;
+	mms=re.ms;
 	
 	/*
 	jo->x=jo->y=500;

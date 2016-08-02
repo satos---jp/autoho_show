@@ -1,12 +1,6 @@
 #ifndef DLLTEST_H
 #define DLLTEST_H
 
-struct replstate{
-	char lv,sc;
-	int ms,pt;
-	void out();
-};
-
 struct joydata{
 	int y,x,b;
 	//button

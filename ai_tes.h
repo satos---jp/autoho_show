@@ -3,7 +3,9 @@
 
 #include "head_dlltest.h"
 #include "reversing/reverser.h"
-void ai_conduction(replstate* re,joydata* jo,revdata& rd);
+#include "reversing/rev_replstate.h"
+
+void ai_conduction(joydata* jo,replstate& re,revdata& rd);
 void ai_init();
 void dumpdat();
 

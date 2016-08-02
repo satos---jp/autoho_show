@@ -4,28 +4,17 @@
 
 
 
-boschara getbosdata(){
+void boschara::get(){
 	int necx = getenumecx(0x4be3c8,0x416290);
-	boschara res;
 	if(necx!=0){
 		int b = necx + 0x4e00 + 0x28a0;
 		//ods("bospx : %x",b);
-		res.p = getfposconv(necx + 0x4e00 + 0x28a0);
-		res.col = getfpos(necx + 0x4e00 + 0x28dc);
-		res.sp = getfpos(necx + 0x4e00 + 0x28b8);
+		p = getfposconv(necx + 0x4e00 + 0x28a0);
+		col = getfpos(necx + 0x4e00 + 0x28dc);
+		sp = getfpos(necx + 0x4e00 + 0x28b8);
 		//なんかふっとんでる。が、動いてない。
 		//かけるのは4bded8. で、別に1.0ですねー、と。
 	}
-	return res;
-}
-
-fpos getbosxy(int necx){
-	if(necx==0)return fpos();
-	necx += 0x4e00 + 0x28a0;
-	float x = *(float*)(necx);
-	float y = *(float*)(necx+0x4);
-	x += 320;
-	return fpos(y,x);
 }
 
 void boschara::draw(HDC &hdc){

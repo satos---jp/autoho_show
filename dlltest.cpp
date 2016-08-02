@@ -30,31 +30,6 @@ DWORD centd=0;
 int ct=0,cp=0;
 
 
-void replstate::out(){
-	//sprintf(ods,"%d %d ms %d pt %d",lv,sc,ms,pt);
-	//ODS(ods);
-	ods("%d %d ms %d pt %d",lv,sc,ms,pt);
-}
-
-void getrepst(replstate* st){
-	int addr = 0x4c4e74;
-	int ap = (int)(*(int*)(addr));
-	if(ap==0){
-		st->lv=-1;
-		st->ms=-1;
-		return;
-	}
-	int ministrpos = (*(int*)(ap + 0x8));
-	st->lv = *((char*)(ministrpos + 0x2));
-	st->sc = *((char*)(ministrpos + 0x3));
-	st->pt = *((int*)(ministrpos + 0x14));
-	st->ms = (*(int*)(ap + 0x1c));
-	//詳細はreversing/forida/anal を見よ
-	
-	//ptは死んだときに得られるそうな。
-	//st->out();
-}
-
 
 
 
@@ -104,8 +79,12 @@ MMRESULT WINAPI Joygetposex_wrapper( UINT uJoyID, LPJOYINFOEX pji){
 	HWND hwnd = GetHwnd(browsername);
 
 
+	replstate re;
+	re.get();
 	revdata red;
-	getrevdata(red);
+	red.get();
+	
+	
 	if(hwnd!=NULL){
 		//ODS("cancap");
 		HDC ghdc = CopyWindow(hwnd);
@@ -113,7 +92,6 @@ MMRESULT WINAPI Joygetposex_wrapper( UINT uJoyID, LPJOYINFOEX pji){
 		if(debhwnd!=NULL){
 			sprintf(ods,"finddeb %x",debhwnd);
 			//ODS(ods);
-
 				
 			red.draw(ghdc);
 			PostMessage(debhwnd,WM_APP,0,((LPARAM)ghdc));
@@ -137,12 +115,8 @@ MMRESULT WINAPI Joygetposex_wrapper( UINT uJoyID, LPJOYINFOEX pji){
 	pji->dwButtonNumber=3;
 	
 	
-	replstate st;
-	getrepst(&st);
-	
-	
 	joydata jo;
-	ai_conduction(&st,&jo,red);
+	ai_conduction(&jo,re,red);
 	
 	pji->dwXpos=jo.x;
 	pji->dwYpos=jo.y;
@@ -220,7 +194,7 @@ void WINAPI detach_joygetposex(){
 	//ODS(ods);
 	SendMessage(debhwnd,WM_CLOSE,0,0); //きかない。
 	
-	Sleep(5000);
+	Sleep(3000);
 	//なんか、5秒程度待つと落ちない。
 	//謎、まったくもって謎！
 	VirtualProtect(gotpos, sizeof(gotpos), PAGE_EXECUTE_READ, &dummy);
