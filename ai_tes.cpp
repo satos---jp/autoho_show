@@ -42,11 +42,6 @@ void ai_init(){
 }
 
 
-bool isokinit(replstate re){
-	return (re.ms==-1);
-}
-
-
 vector<pair<mp,fpos> > enummypos(revdata d,fpos nmp){
 	//次状態としてありうる自機位置を列挙する。
 	//mpにはレバー入れ方が入る。
@@ -79,6 +74,8 @@ void getd(revdata d,int& ry,int& rx,int& button){
 		//5-7で確認可能。
 		if(d.my.fil>=1.0){
 			if(abs(d.my.p.dist(d.bos.p)) < 120.0){
+				//通常120だったが、8-7のために50にした。
+				//通常120だったが、10-4のために145にした。
 				//撮れるので打つ
 				button |= 1;
 				//return;
@@ -109,7 +106,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 				mfp pb = tps[k];
 				d.my.p = pb.sec;
 				d.my.normalize();
-				if(d.isdie())continue;
+				if(d.isdie())continue; //iscolのチェック時にはここをコメントアウト。
 				{
 					if(pa.fir.fir>=-1)pb.fir = pa.fir;
 					pb.sec = d.my.p;
@@ -151,7 +148,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 					d.my.normalize();
 					double tbd = d.my.p.dist(d.bos.p);
 					
-					
+					//通常100だったが、10-4のために150にした。
 					if(tbd<100.0){
 						//近すぎるのも考え物だよなあ...
 						tbd = (100.0-tbd) * 10.0;
@@ -161,7 +158,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 					if(wd<50.0){
 						tbd += (50.0-wd) * 1000.0;
 					}
-					ods("dy,dx %d %d -> %d pat %f dist",dy,dx,pan[i],tbd);
+					//ods("dy,dx %d %d -> %d pat %f dist",dy,dx,pan[i],tbd);
 					han.push_back(dmp( tbd , mp(dy,dx)));
 					break;
 				}
@@ -171,7 +168,7 @@ void getd(revdata d,int& ry,int& rx,int& button){
 
 	{
 		sort(han.begin(),han.end());
-		ods("candsize %d ",han.size());
+		//ods("candsize %d ",han.size());
 		if(han.size()>0){
 			//ボスに一番近いやつを選ぶ。
 			//ods("ress %f , %d %d",han[0].fir,han[0].sec.fir,han[0].sec.sec);
@@ -180,10 +177,11 @@ void getd(revdata d,int& ry,int& rx,int& button){
 			rx = pa.sec * 300.0;
 		}	
 	}
+	
 }
 
 
-void ai_conduction(joydata* jo,replstate& re,revdata& rd){
+void ai_conduction(joydata* jo,revdata& rd){
 	//ods("conduct %d",nstate);
 	jo->x=jo->y=500;
 	jo->b=0;
@@ -191,27 +189,27 @@ void ai_conduction(joydata* jo,replstate& re,revdata& rd){
 	//ods("myp .. y: %f x: %f\n",rd.my.p.y,rd.my.p.x);
 	
 	if(nstate==-1){
-		if(false && !isokinit(re)){ //とりま、外しとく。
+		if(false && !(rd.state.ms==-1)){ //とりま、外しとく。
 			ods("cantstart");
 			return;
 		}
 		else{
 			jo->b = 1;
 			//初期動
-			if(re.ms<0){
+			if(rd.state.ms<0){
 				nstate = -1;
 				//まだまだ
 			}
 			else{
 				nstate = 0;
-				mms = re.ms;
+				mms = rd.state.ms;
 			}
 		}
 	}
 	else{
 		jo->b = 0;
 		if(nstate<-1)return;
-		if(re.ms<0){ //なんらかのエラーが発生している。
+		if(rd.state.ms<0){ //なんらかのエラーが発生している。
 			ods("errorocced");
 			nstate = -2;
 			return;
@@ -233,18 +231,27 @@ void ai_conduction(joydata* jo,replstate& re,revdata& rd){
 		break;
 	case 2:
 		//起動するまで待つ
-		if(re.ms>=100){
+		if(rd.state.ms>=100){
 			nstate = 3;
 			//起動した。
 		}
 		break;
 	case 3:
-		if(re.ms!=mms){
+		if(rd.state.ms!=mms){
 			//無事に動いている
 			//とりま、向きのみで。
 
 			int y=0,x=0,b=0;
 			getd(rd,y,x,b);
+			
+			
+			//8-2のための乱数措置。200ms
+			//ex-2 110ms
+			if(rd.state.ms<110){
+				x *= ((rand() % 3) - 1);
+				y *= ((rand() % 3) - 1);
+			}
+
 			jo->y = 500 + y;
 			jo->x = 500 + x;
 			jo->b = b;
@@ -275,7 +282,7 @@ void ai_conduction(joydata* jo,replstate& re,revdata& rd){
 	//ods("nstate .. %d fix .. %s",nstate,fixed?"true":"false");
 	//ods("ndir x .. %d y .. %d bs .. %d",jo->x,jo->y,jo->b);
 	//re->out();
-	mms=re.ms;
+	mms=rd.state.ms;
 	
 	/*
 	jo->x=jo->y=500;

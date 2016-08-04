@@ -8,13 +8,14 @@
 #include "boss/boss_reverse.h"
 #include "bullet/bullet_reverse.h"
 #include "laser/laser_reverse.h"
-
+#include "rev_replstate.h"
 
 struct revdata{
 	boschara bos;
 	mychara my;
 	std::vector<bullet> buls;
 	std::vector<laser> lasers;
+	replstate state;
 	
 	void get();
 	void draw(HDC& hdc);

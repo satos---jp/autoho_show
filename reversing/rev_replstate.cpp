@@ -7,6 +7,7 @@ void replstate::out(){
 	ods("%d %d ms %d pt %d",lv,sc,ms,pt);
 }
 
+
 void replstate::get(){
 	int addr = 0x4c4e74;
 	int ap = (int)(*(int*)(addr));
@@ -25,3 +26,14 @@ void replstate::get(){
 	//pt‚ÍŽ€‚ñ‚¾‚Æ‚«‚É“¾‚ç‚ê‚é‚»‚¤‚ÈB
 	//st->out();
 }
+
+void replstate::draw(HDC& hdc){
+	char s[256];
+	sprintf(s,"lv: %d , sc: %d , pt: %d, ms: %d",lv,sc,pt,ms);
+	//TextOut(hdc,100,450,s,strlen(s));
+	//TextOut(hdc,100,460,s,strlen(s));
+	TextOut(hdc,100,465,s,strlen(s));
+
+	//ods("%d %d ms %d pt %d",lv,sc,ms,pt);
+}
+

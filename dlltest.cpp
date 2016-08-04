@@ -79,8 +79,8 @@ MMRESULT WINAPI Joygetposex_wrapper( UINT uJoyID, LPJOYINFOEX pji){
 	HWND hwnd = GetHwnd(browsername);
 
 
-	replstate re;
-	re.get();
+	//replstate re;
+	//re.get();
 	revdata red;
 	red.get();
 	
@@ -116,7 +116,8 @@ MMRESULT WINAPI Joygetposex_wrapper( UINT uJoyID, LPJOYINFOEX pji){
 	
 	
 	joydata jo;
-	ai_conduction(&jo,re,red);
+	//ai_conduction(&jo,re,red);
+	ai_conduction(&jo,red);
 	
 	pji->dwXpos=jo.x;
 	pji->dwYpos=jo.y;

@@ -13,6 +13,6 @@ struct bullet{
 	void draw(HDC& hdc);
 };
 
-vector<bullet> enubal(int necx);
+vector<bullet> enubal();
 
 #endif

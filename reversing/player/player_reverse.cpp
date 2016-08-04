@@ -11,6 +11,10 @@ void mychara::get(){
 	if(necx!=0){
 		p = getfposconv(necx + 0x1e30);
 		col = getfpos(necx + 0x3d8);
+		
+		//4-7ÇÃÇΩÇﬂÅB
+		//col.x += 1.0;
+		//col.y += 1.0;
 	}
 	
 	//ë¨ìxÇìæÇÈ
@@ -21,12 +25,14 @@ void mychara::get(){
 			//ods("sppedp %x",b);
 			int d[4] = {0x18,0x20,0x14,0x1c};
 			// 2.3, 2.3/sqrt(2), 5, 5/sqrt(2)
+			slor = *(float*)(necx+0x2a18);
+			//Ç‡Ç§ä|ÇØÇ∆Ç´Ç‹ÇµÇÂÇ§Ç©ÇÀÅB
 			rep(i,4){
 				sp[i] = *(float*)(b+d[i]);
+				sp[i] *= slor;
 				//ods("speed %d : %f",i,res.sp[i]);
 			}
 			
-			slor = *(float*)(necx+0x2a18);
 			//ods("slower : %f",res.slor); 
 		}
 		

@@ -7,12 +7,13 @@ bullet getbfp(int b){
 	bullet res;
 	if(b==0)return res;
 	res.p = getfposconv(b + 0x2d0);
-	res.sp = getfpos(b + 0x2dc);
 	res.col = getfpos(b + 0x30c);
+	res.sp = getfpos(b + 0x2dc);
 	return res;
 }
 
-vector<bullet> enubal(int necx){
+vector<bullet> enubal(){
+	int necx = getenumecx(0x4be3c8 + 0x20,0x405a00);
 	//ods("bs %x ",necx);
 	vector<bullet> res;
 	if(necx==0)return res;
