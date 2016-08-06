@@ -116,7 +116,9 @@ HWND makewindow(HINSTANCE hInstance){
 			break;
 		}
 		
-		ods("not to registered yet");
+		//ods("not to registered yet");
+		//ods("errcode %x %x\n",GetLastError(),hwnd);
+		//success がかえってくるらしい。なんやこれ。
 		
 		WNDCLASS winc;
 
@@ -133,6 +135,8 @@ HWND makewindow(HINSTANCE hInstance){
 
 		if (!RegisterClass(&winc)){
 			ods("miss to register debug window\n");
+			ods("errcode %x\n",GetLastError());
+			//1410	0x00000582	そのクラスは既にあります。
 			return NULL;
 		}
 	}

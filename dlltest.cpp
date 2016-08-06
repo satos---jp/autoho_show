@@ -7,8 +7,8 @@
 
 #include "defines.h"
 
-#include "head_dlltest.h"
-#include "ai_tes.h"
+
+#include "conductor.h"
 
 #include "rensya_window.h"
 #include "debug_window.h"

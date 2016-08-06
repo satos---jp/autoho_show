@@ -5,7 +5,7 @@ SRC = dlltest.cpp ai_tes.cpp rensya_window.cpp debug_window.cpp reversing/revers
 	reversing/boss/boss_reverse.cpp reversing/player/player_reverse.cpp \
 	reversing/bullet/bullet_reverse.cpp reversing/laser/laser_reverse.cpp \
 	reversing/rev_utils.cpp reversing/draw_utils.cpp \
-	reversing/rev_replstate.cpp
+	reversing/rev_replstate.cpp conductor.cpp
 
 OBJDIR = build
 DLL_OBJS = $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))

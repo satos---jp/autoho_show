@@ -4,8 +4,9 @@
 #include <windows.h>
 
 struct replstate{
-	char lv,sc; //lv,sc .. レベル,シーン。
+	//char lv,sc; //lv,sc .. レベル,シーン。
 	int ms,pt; //ms .. 開始からの秒数,pt .. ポイント。
+	int stgidx,stan;
 	void out();
 	void get();
 	void draw(HDC& hdc);
