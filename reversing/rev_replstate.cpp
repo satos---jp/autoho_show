@@ -40,6 +40,15 @@ void replstate::get(){
 		//ods("aft",stgidx);
 	}
 	else stgidx= -1;
+	
+	if(stgidx>=0){
+		int b = *(int*)(0x4c4e78);
+		iscleared = ((*(int*)(b + 0x60 * stgidx + 0x4b0))==1);
+		
+		//SC‚Æ‚¢‚¤‚Ì‚ª‚È‚¢‚ÆA‚¾‚ß‚Á‚Û‚»‚¤(‚Å‚«‚È‚»‚¤)
+		//‚±‚ê‚ÍScreenShot‚Å‚·‚Ë‚¦...
+		//‚±‚Á‚©‚ç‚Í‚Æ‚ê‚È‚»‚¤...
+	}
 
 	
 	//pt‚ÍŽ€‚ñ‚¾‚Æ‚«‚É“¾‚ç‚ê‚é‚»‚¤‚ÈB
